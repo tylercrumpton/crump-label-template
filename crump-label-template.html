@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Crump Part Label</title>
+    <script
+      src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"
+      type="text/javascript"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/barcodes/JsBarcode.code128.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+    <script type="text/javascript">
+      WebFont.load({
+        google: {
+          families: ["Josefin Sans:regular,700,700italic"],
+        },
+      });
+    </script>
+    <style>
+      .body {
+        color: #000;
+        text-align: -moz-center;
+        text-align: -webkit-center;
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        width: 100vw;
+        overflow: hidden;
+      }
+      .label-area {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        height: 100%;
+      }
+      .preview-mode {
+        width: 696px;
+        height: 271px;
+        margin: 64px 0 0 64px;
+        border: 1px solid #000;
+        padding: 30px 20px;
+        border-radius: 32px;
+        box-shadow: 1px 1px 1px 1px rgb(0, 0, 0, 0.3);
+      }
+      .label-62x29 {
+        width: 696px;
+        height: 271px;
+      }
+      .label-62x100 {
+        width: 2218px;
+        height: 1392px;
+      }
+
+      .right-area {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        width: 180px;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-box-pack: justify;
+        -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+      }
+
+      .left-area {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        overflow: visible;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+        -o-object-position: 50% 50%;
+        object-position: 50% 50%;
+      }
+
+      #part-mpn {
+        overflow: visible;
+        margin-bottom: -4px;
+        font-family: "Josefin Sans", sans-serif;
+        font-size: 38px;
+        line-height: 116%;
+        font-weight: 700;
+        text-align: left;
+        white-space: nowrap;
+        -o-object-fit: fill;
+        object-fit: fill;
+      }
+
+      #part-description {
+        overflow: visible;
+        font-family: "Josefin Sans", sans-serif;
+        font-size: 21px;
+        line-height: 116%;
+        font-style: italic;
+        font-weight: 700;
+        text-align: left;
+      }
+
+      .part-location {
+        padding-top: 5px;
+        font-family: "Josefin Sans", sans-serif;
+        font-size: 52px;
+        line-height: 100%;
+        text-align: left;
+      }
+
+      .spacer {
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+      }
+
+      .logo-area {
+        display: block;
+        text-align: right;
+      }
+
+      .cs-logo {
+        width: 114px;
+      }
+
+      .qr {
+        max-width: 150px;
+      }
+
+      #qr-area {
+        text-align: right;
+      }
+
+      #barcode {
+        width: 100%;
+        height: 10%;
+      }
+    </style>
+  </head>
+  <body class="body">
+    <div class="label-area">
+      <div class="left-area">
+        <div id="part-mpn">TCC0603X7R104K500CT</div>
+        <div id="part-description">
+          Multilayer Ceramic Capacitor, 1 F, 10%, X7R, 16 V, 0805 [2012 Metric]
+        </div>
+        <div class="spacer"></div>
+        <canvas id="barcode"></canvas>
+        <div class="part-location">
+          box<strong id="box-number">01</strong>.bag<strong id="bag-number"
+            >001</strong
+          >
+        </div>
+      </div>
+      <div class="right-area">
+        <div class="logo-area">
+          <img src="crumpspace-condensed-logo-bw.svg" alt="" class="cs-logo" />
+        </div>
+        <div id="qr-area"></div>
+      </div>
+    </div>
+  </body>
+</html>
+<script>
+  // Grab all of the URL parameters
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const partMpn = urlParams.get("mpn");
+  const partDescription = urlParams.get("description");
+  const partUrl = urlParams.get("url");
+  const boxNumber = urlParams.get("box");
+  const bagNumber = urlParams.get("bag");
+
+  // Display like a printed label for previewing if set
+  if (urlParams.has("preview")) {
+    document.body.classList.add("preview-mode");
+  }
+
+  // Update text elements
+  document.getElementById("part-mpn").innerHTML = partMpn;
+  document.getElementById("part-description").innerHTML = partDescription;
+  document.getElementById("box-number").innerHTML = boxNumber;
+  document.getElementById("bag-number").innerHTML = bagNumber;
+
+  // 1D Barcode
+  var barcode = document.getElementById("barcode");
+  JsBarcode(barcode, partMpn, {
+    format: "CODE128",
+    lineColor: "#000",
+    width: 1,
+    height: 30,
+    displayValue: false,
+    margin: 0,
+  });
+
+  // QR Code
+  var typeNumber = 0;
+  var errorCorrectionLevel = "L";
+  var qr = qrcode(typeNumber, errorCorrectionLevel);
+  qr.addData(partUrl);
+  qr.make();
+  const qrArea = document.getElementById("qr-area");
+  qrArea.innerHTML = qr.createSvgTag((cellSize = 20), (margin = 0));
+  qrArea.children[0].setAttribute("width", "150px");
+  qrArea.children[0].setAttribute("height", "150px");
+</script>
