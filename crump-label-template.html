@@ -114,7 +114,7 @@
       .part-location {
         padding-top: 5px;
         font-family: "Josefin Sans", sans-serif;
-        font-size: 52px;
+        font-size: 58px;
         line-height: 100%;
         text-align: left;
       }
@@ -179,7 +179,7 @@
   const urlParams = new URLSearchParams(queryString);
   const partMpn = urlParams.get("mpn");
   const partDescription = urlParams.get("description");
-  const partUrl = urlParams.get("url");
+  const qrData = urlParams.get("qr");
   const boxNumber = urlParams.get("box");
   const bagNumber = urlParams.get("bag");
 
@@ -199,7 +199,7 @@
   JsBarcode(barcode, partMpn, {
     format: "CODE128",
     lineColor: "#000",
-    width: 1,
+    width: 10,
     height: 30,
     displayValue: false,
     margin: 0,
@@ -209,7 +209,7 @@
   var typeNumber = 0;
   var errorCorrectionLevel = "L";
   var qr = qrcode(typeNumber, errorCorrectionLevel);
-  qr.addData(partUrl);
+  qr.addData(qrData);
   qr.make();
   const qrArea = document.getElementById("qr-area");
   qrArea.innerHTML = qr.createSvgTag((cellSize = 20), (margin = 0));
