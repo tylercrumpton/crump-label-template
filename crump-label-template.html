@@ -182,7 +182,7 @@
   const qrData = urlParams.get("qr");
   const boxNumber = urlParams.get("box");
   const bagNumber = urlParams.get("bag");
-  const stnNumber = urlParams.get("stn");
+  const stencilNumber = urlParams.get("stencil");
 
   // Display like a printed label for previewing if set
   if (urlParams.has("preview")) {
@@ -193,9 +193,9 @@
   if (bagNumber) {
     document.getElementById("location-type").innerHTML = "bag";
     document.getElementById("bag-number").innerHTML = bagNumber;
-  } else if (stnNumber) { // If stencil number is provided, set the location type to stencil
+  } else if (stencilNumber) { // If stencil number is provided, set the location type to stencil
     document.getElementById("location-type").innerHTML = "stencil";
-    document.getElementById("bag-number").innerHTML = stnNumber;
+    document.getElementById("bag-number").innerHTML = stencilNumber;
   }
 
   // Update text elements

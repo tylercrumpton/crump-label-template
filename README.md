@@ -23,5 +23,5 @@ If you want the ready-to-print label that can be used to generate an image using
 - `description=` Part description text displayed in the main part of the label
 - `qr=` Data that is encoded in the QR code (text, URL, etc)
 - `box=` Box number
-- `bag=` Bag number
+- `bag=` or `stencil=` Bag or stencil number (only one can be used at a time)
 - `preview` If set, generate an example preview of the label instead of the ready-to-print layout
