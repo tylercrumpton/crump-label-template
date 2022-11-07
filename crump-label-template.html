@@ -159,7 +159,7 @@
         <div class="spacer"></div>
         <canvas id="barcode"></canvas>
         <div class="part-location">
-          box<strong id="box-number">01</strong>.bag<strong id="bag-number"
+          <span id="location-container">box</span><strong id="box-number">01</strong>.<span id="location-type">bag</span><strong id="bag-number"
             >001</strong
           >
         </div>
@@ -182,17 +182,26 @@
   const qrData = urlParams.get("qr");
   const boxNumber = urlParams.get("box");
   const bagNumber = urlParams.get("bag");
+  const stnNumber = urlParams.get("stn");
 
   // Display like a printed label for previewing if set
   if (urlParams.has("preview")) {
     document.body.classList.add("preview-mode");
   }
 
+  // If bag number is provided, set the location type to bag
+  if (bagNumber) {
+    document.getElementById("location-type").innerHTML = "bag";
+    document.getElementById("bag-number").innerHTML = bagNumber;
+  } else if (stnNumber) { // If stencil number is provided, set the location type to stencil
+    document.getElementById("location-type").innerHTML = "stencil";
+    document.getElementById("bag-number").innerHTML = stnNumber;
+  }
+
   // Update text elements
   document.getElementById("part-mpn").innerHTML = partMpn;
   document.getElementById("part-description").innerHTML = partDescription;
   document.getElementById("box-number").innerHTML = boxNumber;
-  document.getElementById("bag-number").innerHTML = bagNumber;
 
   // 1D Barcode
   var barcode = document.getElementById("barcode");
