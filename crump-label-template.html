@@ -166,7 +166,7 @@
       </div>
       <div class="right-area">
         <div class="logo-area">
-          <img src="crumpspace-condensed-logo-bw.svg" alt="" class="cs-logo" />
+          <img src="crumpspace-condensed-logo-bw.svg" alt="" class="cs-logo" id="logo" />
         </div>
         <div id="qr-area"></div>
       </div>
@@ -183,7 +183,7 @@
   const boxNumber = urlParams.get("box");
   const bagNumber = urlParams.get("bag");
   const stencilNumber = urlParams.get("stencil");
-
+  const logo = urlParams.get("logo");
   // Display like a printed label for previewing if set
   if (urlParams.has("preview")) {
     document.body.classList.add("preview-mode");
@@ -198,6 +198,9 @@
     document.getElementById("bag-number").innerHTML = stencilNumber;
   }
 
+  if (logo) {
+    document.getElementById("logo").src = logo;
+  }
   // Update text elements
   document.getElementById("part-mpn").innerHTML = partMpn;
   document.getElementById("part-description").innerHTML = partDescription;
